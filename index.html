@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Louis Imperiale | Digital Media Portfolio</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --dark: #0f0f0f;
+    --darker: #080808;
+    --accent: #c8a96e;
+    --accent2: #e8c98e;
+    --text: #e8e8e8;
+    --muted: #888;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1410 50%, #0f0f0f 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 40px;
+  }
+
+  .hero-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+
+  .skill-tag {
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .scroll-hint {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    max-width: 560px;
+    margin-bottom: 48px;
+    font-size: 0.95rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* CARDS GRID */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+
+  .card-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-thumb iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+  }
+
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    transition: background 0.2s;
+  }
+
+  .card:hover .play-overlay { background: rgba(0,0,0,0.1); }
+
+  .play-btn {
+    width: 52px;
+    height: 52px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .play-btn svg { width: 20px; height: 20px; fill: #000; margin-left: 3px; }
+
+  .card-body { padding: 20px; }
+
+  .card-category {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* FEATURED CARD */
+  .card-featured {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .card-featured:hover { border-color: var(--accent); }
+
+  .card-featured .card-thumb { aspect-ratio: 16/7; }
+
+  /* TOOLS */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .tool-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .tool-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+  }
+
+  .tool-level {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .tool-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .tool-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+  }
+
+  /* WEB SECTION */
+  .web-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  @media (max-width: 640px) { .web-card { grid-template-columns: 1fr; } }
+
+  .web-preview {
+    background: #111;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border-right: 1px solid var(--border);
+  }
+
+  .browser-mock {
+    width: 100%;
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .browser-bar {
+    background: #2a2a2a;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .browser-url {
+    flex: 1;
+    background: #333;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: 8px;
+  }
+
+  .browser-content {
+    padding: 20px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .browser-content .site-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .browser-content .site-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .web-info { padding: 32px; }
+
+  .web-info h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .web-info p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .web-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+
+  .web-tag {
+    padding: 4px 12px;
+    background: rgba(200,169,110,0.1);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    color: var(--accent);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: #000;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+
+  .btn:hover { background: var(--accent2); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-outline:hover { background: rgba(200,169,110,0.1); color: var(--accent); }
+
+  /* CONTACT */
+  .contact-section {
+    background: linear-gradient(135deg, #1a1410, #0f0f0f);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .contact-section h2 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    margin-bottom: 12px;
+  }
+
+  .contact-section p {
+    color: var(--muted);
+    margin-bottom: 32px;
+    font-size: 0.95rem;
+  }
+
+  .contact-email {
+    font-size: 1.2rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .contact-email:hover { color: var(--accent2); }
+
+  /* YOUTUBE CHANNEL CARD */
+  .channel-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+    margin-top: 20px;
+  }
+
+  .channel-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .channel-icon {
+    width: 52px;
+    height: 52px;
+    background: #ff0000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .channel-icon svg { width: 24px; height: 24px; fill: white; }
+
+  .channel-info h4 { font-weight: 600; margin-bottom: 4px; }
+  .channel-info p { font-size: 0.85rem; color: var(--muted); }
+
+  .arrow { margin-left: auto; color: var(--muted); font-size: 1.2rem; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-tag">Digital Media Portfolio</p>
+  <h1>Louis <span>Imperiale</span></h1>
+  <p class="hero-sub">Video producer, content creator, and digital communications professional with 6+ years of production experience across broadcast, podcast, short-form, and marketing content.</p>
+  <div class="hero-skills">
+    <span class="skill-tag">Adobe Premiere Pro</span>
+    <span class="skill-tag">Photoshop</span>
+    <span class="skill-tag">After Effects</span>
+    <span class="skill-tag">Illustrator</span>
+    <span class="skill-tag">InDesign</span>
+    <span class="skill-tag">Lightroom</span>
+    <span class="skill-tag">Video Production</span>
+    <span class="skill-tag">Podcast Editing</span>
+    <span class="skill-tag">Short-Form Content</span>
+    <span class="skill-tag">Web Design</span>
+  </div>
+  <p class="scroll-hint">↓ View Work</p>
+</div>
+
+<hr class="divider">
+
+<!-- VIDEO PRODUCTION -->
+<section>
+  <p class="section-label">01 — Video Production</p>
+  <h2 class="section-title">Podcast & Long-Form Video</h2>
+  <p class="section-desc">Full video and audio post-production for Faithful Discourse, the podcast of Second Presbyterian Church Indianapolis. Editing, color grading, audio mixing, and publishing.</p>
+
+  <div class="grid-2">
+    <a href="https://youtu.be/83oe4ExPoAk" target="_blank" class="card">
+      <div class="card-thumb">
+        <iframe src="https://www.youtube.com/embed/83oe4ExPoAk" allowfullscreen loading="lazy"></iframe>
+        <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+      </div>
+      <div class="card-body">
+        <p class="card-category">Podcast Production</p>
+        <h3 class="card-title">Faithful Discourse — Episode</h3>
+        <p class="card-desc">Full video and audio post-production including editing, color grading, audio mixing, and titles.</p>
+      </div>
+    </a>
+
+    <a href="https://youtu.be/_aWOr9BWbbk" target="_blank" class="card">
+      <div class="card-thumb">
+        <iframe src="https://www.youtube.com/embed/_aWOr9BWbbk" allowfullscreen loading="lazy"></iframe>
+        <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      </div>
+      <div class="card-body">
+        <p class="card-category">Podcast Production</p>
+        <h3 class="card-title">Faithful Discourse — Episode</h3>
+        <p class="card-desc">Full video and audio post-production including editing, color grading, audio mixing, and titles.</p>
+      </div>
+    </a>
+  </div>
+
+  <a href="https://www.youtube.com/@FaithfulDiscourse-CH" target="_blank" class="channel-card">
+    <div class="channel-icon">
+      <svg viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.7-1-2.4c-.9-1-1.9-1-2.4-1.1C17.2 2.5 12 2.5 12 2.5s-5.2 0-8.1.2c-.5.1-1.5.1-2.4 1.1-.7.7-1 2.4-1 2.4S.3 8.1.3 10v1.8c0 1.9.2 3.8.2 3.8s.2 1.7 1 2.4c.9 1 2.1.9 2.6 1C5.6 19.2 12 19.2 12 19.2s5.2 0 8.1-.3c.5-.1 1.5-.1 2.4-1.1.7-.7 1-2.4 1-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.7 13.5V7l6.5 3.3-6.5 3.2z"/></svg>
+    </div>
+    <div class="channel-info">
+      <h4>Faithful Discourse — Full YouTube Channel</h4>
+      <p>View all produced episodes on the Faithful Discourse YouTube channel</p>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+</section>
+
+<hr class="divider">
+
+<!-- SHORT FORM -->
+<section>
+  <p class="section-label">02 — Short-Form Content</p>
+  <h2 class="section-title">Social Media & Reels</h2>
+  <p class="section-desc">Short-form video content edited for Second Presbyterian Church Indianapolis's Instagram, optimized for social media engagement and platform best practices.</p>
+
+  <div class="grid-3">
+    <a href="https://www.instagram.com/reel/DUthyZjEtA5/" target="_blank" class="card">
+      <div class="card-thumb" style="background:#111; align-items:center; justify-content:center;">
+        <div style="text-align:center; padding:20px;">
+          <div style="width:48px;height:48px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:12px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <p style="font-size:0.8rem;color:#888;">@secondpresindy</p>
+          <p style="font-size:0.75rem;color:#666;margin-top:4px;">Tap to view reel</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-category">Short-Form / Reels</p>
+        <h3 class="card-title">Church Reel — No. 1</h3>
+        <p class="card-desc">Short-form social media content edited for Instagram Reels, optimized for engagement and platform best practices.</p>
+      </div>
+    </a>
+
+    <a href="https://www.instagram.com/reel/DUl2kDAEvI_/" target="_blank" class="card">
+      <div class="card-thumb" style="background:#111; align-items:center; justify-content:center;">
+        <div style="text-align:center; padding:20px;">
+          <div style="width:48px;height:48px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:12px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <p style="font-size:0.8rem;color:#888;">@secondpresindy</p>
+          <p style="font-size:0.75rem;color:#666;margin-top:4px;">Tap to view reel</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-category">Short-Form / Reels</p>
+        <h3 class="card-title">Church Reel — No. 2</h3>
+        <p class="card-desc">Short-form social media content edited for Instagram Reels, optimized for engagement and platform best practices.</p>
+      </div>
+    </a>
+
+    <a href="https://www.instagram.com/reel/DUTogGxkqCr/" target="_blank" class="card">
+      <div class="card-thumb" style="background:#111; align-items:center; justify-content:center;">
+        <div style="text-align:center; padding:20px;">
+          <div style="width:48px;height:48px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:12px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <p style="font-size:0.8rem;color:#888;">@secondpresindy</p>
+          <p style="font-size:0.75rem;color:#666;margin-top:4px;">Tap to view reel</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-category">Short-Form / Reels</p>
+        <h3 class="card-title">Church Reel — No. 3</h3>
+        <p class="card-desc">Short-form social media content edited for Instagram Reels, optimized for engagement and platform best practices.</p>
+      </div>
+    </a>
+  </div>
+
+  <a href="https://www.instagram.com/secondpresindy/reels/" target="_blank" class="channel-card">
+    <div class="channel-icon" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </div>
+    <div class="channel-info">
+      <h4>@secondpresindy — Full Instagram Reels</h4>
+      <p>View all short-form content on Second Presbyterian Church's Instagram</p>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+</section>
+
+<hr class="divider">
+
+<!-- MUSIC VIDEO -->
+<section>
+  <p class="section-label">03 — Music Video Production</p>
+  <h2 class="section-title">Creative Video Work</h2>
+  <p class="section-desc">Self-produced music video demonstrating end-to-end video production capabilities including concept development, filming, editing, color grading, and post-production using Adobe Premiere Pro and After Effects.</p>
+
+  <div class="card-featured">
+    <div class="card-thumb">
+      <iframe src="https://www.youtube.com/embed/Y3_tWsyKyRA" allowfullscreen loading="lazy" style="pointer-events:none;"></iframe>
+      <div class="play-overlay">
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+    <div class="card-body" style="padding:24px;">
+      <p class="card-category">Music Video / Creative Production</p>
+      <h3 class="card-title" style="font-size:1.1rem;">Fifth Lucky Dragon — Music Video</h3>
+      <p class="card-desc">Self-produced music video showcasing end-to-end production: concept, filming, editing, color grading, motion graphics, and final post-production in Adobe Premiere Pro and After Effects.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WEB DESIGN -->
+<section>
+  <p class="section-label">04 — Web Design</p>
+  <h2 class="section-title">Website Design & Digital Presence</h2>
+  <p class="section-desc">Designed and manage a complete artist website including visual design, content strategy, navigation architecture, and ongoing updates.</p>
+
+  <div class="web-card">
+    <div class="web-preview">
+      <div class="browser-mock">
+        <div class="browser-bar">
+          <div class="browser-dot" style="background:#ff5f57;"></div>
+          <div class="browser-dot" style="background:#ffbd2e;"></div>
+          <div class="browser-dot" style="background:#28c840;"></div>
+          <div class="browser-url">fifthluckydragon.com</div>
+        </div>
+        <div class="browser-content">
+          <div class="site-name">Fifth Lucky Dragon</div>
+          <div class="site-desc">American Music Artist<br>Pop · Indie-Pop · Alternative Pop</div>
+        </div>
+      </div>
+    </div>
+    <div class="web-info">
+      <h3>Fifth Lucky Dragon — Artist Website</h3>
+      <p>Designed and built a complete artist website using Wix, including visual layout, content architecture, mobile responsiveness, social media integration, and ongoing content management.</p>
+      <div class="web-tags">
+        <span class="web-tag">Wix</span>
+        <span class="web-tag">Visual Design</span>
+        <span class="web-tag">Content Strategy</span>
+        <span class="web-tag">Social Integration</span>
+        <span class="web-tag">Mobile Responsive</span>
+      </div>
+      <a href="https://www.fifthluckydragon.com" target="_blank" class="btn">Visit Site →</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRINT & DIGITAL DESIGN -->
+<section>
+  <p class="section-label">05 — Print & Digital Design</p>
+  <h2 class="section-title">Marketing & Impact Materials</h2>
+  <p class="section-desc">Donor-facing impact report designed and produced for Generation W's 2024 annual report, communicating organizational impact, program data, and partner recognition to donors and stakeholders.</p>
+
+  <div class="grid-2">
+    <div class="card" style="cursor:default;">
+      <div class="card-thumb" style="background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%); align-items:center; justify-content:center; flex-direction:column; gap:12px;">
+        <div style="text-align:center; padding:30px;">
+          <div style="font-size:3rem; font-weight:900; color:white; line-height:1; letter-spacing:-2px;">2024</div>
+          <div style="font-size:1.1rem; font-weight:600; color:rgba(255,255,255,0.9); margin-top:8px;">Impact Report</div>
+          <div style="margin-top:16px;">
+            <img src="https://www.genwnow.com/favicon.ico" style="width:32px;height:32px;opacity:0.8;" onerror="this.style.display='none'">
+          </div>
+          <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); margin-top:8px; letter-spacing:2px; text-transform:uppercase;">Generation W</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-category">Annual Impact Report</p>
+        <h3 class="card-title">Generation W 2024 Impact Report</h3>
+        <p class="card-desc">Full 8-page donor-facing impact report designed in Adobe InDesign. Includes data visualization, program metrics, photography layout, brand typography, and partner recognition pages.</p>
+      </div>
+    </div>
+
+    <div class="card" style="cursor:default; background:var(--card);">
+      <div class="card-body" style="padding:28px; height:100%; display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <p class="card-category">Design Highlights</p>
+          <h3 class="card-title" style="margin-bottom:20px;">What This Document Demonstrates</h3>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+              <div style="width:8px;height:8px;background:var(--accent);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:2px;">Data Visualization</div>
+                <div style="font-size:0.8rem;color:var(--muted);">Charts, infographics, and impact statistics presented clearly and on-brand</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+              <div style="width:8px;height:8px;background:var(--accent);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:2px;">Brand Typography & Layout</div>
+                <div style="font-size:0.8rem;color:var(--muted);">Consistent use of brand colors, fonts, and visual hierarchy across 8 pages</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+              <div style="width:8px;height:8px;background:var(--accent);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:2px;">Photography Integration</div>
+                <div style="font-size:0.8rem;color:var(--muted);">Event and program photography laid out across multiple pages</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+              <div style="width:8px;height:8px;background:var(--accent);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:2px;">Partner Recognition</div>
+                <div style="font-size:0.8rem;color:var(--muted);">Multi-tier sponsor and partner recognition pages with logo placement</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+              <div style="width:8px;height:8px;background:var(--accent);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:2px;">Impact Storytelling</div>
+                <div style="font-size:0.8rem;color:var(--muted);">Donor-facing narrative combining statistics, quotes, and program highlights</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:24px;">
+          <div style="font-size:0.75rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Tools Used</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+            <span class="web-tag">Adobe InDesign</span>
+            <span class="web-tag">Adobe Photoshop</span>
+            <span class="web-tag">Brand Design</span>
+            <span class="web-tag">Print Production</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TOOLS -->
+<section>
+  <p class="section-label">06 — Technical Skills</p>
+  <h2 class="section-title">Tools & Proficiency</h2>
+  <p class="section-desc">Adobe Creative Suite proficiency developed over 6+ years of professional production work.</p>
+
+  <div class="tools-grid">
+    <div class="tool-item">
+      <div class="tool-name">Premiere Pro</div>
+      <div class="tool-level">Advanced</div>
+      <div class="tool-bar"><div class="tool-fill" style="width:97%;"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Photoshop</div>
+      <div class="tool-level">Advanced</div>
+      <div class="tool-bar"><div class="tool-fill" style="width:92%;"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">After Effects</div>
+      <div class="tool-level">Proficient</div>
+      <div class="tool-bar"><div class="tool-fill" style="width:82%;"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Lightroom</div>
+      <div class="tool-level">Proficient</div>
+      <div class="tool-bar"><div class="tool-fill" style="width:85%;"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Illustrator</div>
+      <div class="tool-level">Proficient</div>
+      <div class="tool-bar"><div class="tool-fill" style="width:78%;"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">InDesign</div>
+      <div class="tool-level">Proficient</div>
+      <div class="tool-bar"><div class="tool-fill" style="width:75%;"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section">
+  <h2>Let's Work Together</h2>
+  <p>Available for full-time and contract opportunities in digital media, content creation, and marketing.</p>
+  <a href="mailto:louisimperiale4@gmail.com" class="contact-email">louisimperiale4@gmail.com</a>
+  <a href="mailto:louisimperiale4@gmail.com" class="btn">Get In Touch →</a>
+</div>
+
+</body>
+</html>
